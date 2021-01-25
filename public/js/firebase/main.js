@@ -1,3 +1,9 @@
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+firebase.analytics();
+const auth = firebase.auth();
+const fs = firebase.firestore();
+
 const loggedOutLinks = document.querySelectorAll(".logged-out");
 const loggedInLinks = document.querySelectorAll(".logged-in");
 
@@ -83,7 +89,7 @@ auth.onAuthStateChanged((user) => {
     } else {
         console.log('out')
         setupPosts([]);
-        loginCheck(user)
+        loginCheck(user);
     }
 });
 
