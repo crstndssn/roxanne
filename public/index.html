@@ -4,23 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>roxanne</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="css/tailwind.css">
+    <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>Roxanne</title>
+
 </head>
 
 <body>
 
-    <!-- navigation -->
-    <nav class="container mx-auto flex justify-between items-center py-8">
+    <!-- navigatio no auth -->
+    <nav id="navigationPublic" style="display: none;" class="container mx-auto flex justify-between items-center py-8">
         <h1 class="text-3xl font-semibold">Roxanne</h1>
         <div class="flex justify-center items-center">
-            <p class="cursor-pointer text-lg mx-6 logged-in" style="display: none;" id="logout">Logout</p>
-            <p class="cursor-pointer text-lg mx-6 logged-out" style="display: none;" id="btn-signup">Sign Up</p>
-            <p class="cursor-pointer text-lg text-white bg-black py-1 px-3 rounded-md logged-out" style="display: none;"
-                id="btn-login">Log In</p>
+            <p class="cursor-pointer text-md mx-6 logged-out" id="btn-signup">Sign Up</p>
+            <p class="cursor-pointer text-md text-white bg-black py-1 px-3 rounded-md logged-out" id="btn-login">Log In
+            </p>
+        </div>
+    </nav>
+
+    <!-- navigatio auth -->
+    <nav id="navigationAuth" style="display: none;" class="container mx-auto flex justify-between items-center py-8">
+        <h1 class="text-3xl font-semibold">Roxanne</h1>
+        <div class="flex justify-center items-center">
+            <!-- <p class="cursor-pointer text-md mx-6" id="logout">logout</p> -->
+            <p id="getPostBtn" class="cursor-pointer text-md mx-3 text-black bg-transparent">
+                posts</p>
+            <p id="getPostBtn" class="cursor-pointer text-md mx-3 text-black bg-transparent">
+                my posts</p>
+            <p id="addPostBtn" class="cursor-pointer text-md text-white bg-black py-1 px-3 ml-3 rounded-md">add post
+            </p>
+            <img id="userAvatar" class="w-9 ml-5 rounded-full cursor-pointer" alt="user-img">
         </div>
     </nav>
 
@@ -46,33 +60,127 @@
             <span class="close-signup float-right text-4xl text-gray-400 cursor-pointer">&times;</span>
             <h3 class="font-semibold text-3xl mt-2 mb-4">Sign Up</h3>
             <form id="form-signup">
+                <input type="text" id="signup-name" class="bg-gray-200 p-3 my-2 w-full rounded-md" placeholder="Name">
                 <input type="email" id="signup-email" class="bg-gray-200 p-3 my-2 w-full rounded-md"
                     placeholder="Email">
                 <input type="password" id="signup-password" class="bg-gray-200 p-3 my-2 w-full rounded-md"
                     placeholder="Password">
                 <button type="submit" class="w-full bg-black text-white my-2 p-3 rounded-md text-xl">Sign Up</button>
+                <button id="signup-google"
+                    class="w-full bg-red-500 text-white my-2 p-3 rounded-md text-xl">Google</button>
             </form>
         </div>
     </div>
 
-    <!-- posts -->
-    <div class="posts container mx-auto grid grid-cols-3 gap-8">
+
+    <!-- main container -->
+    <div id="viewContainer" class="container mx-auto flex justify-center items-center">
+        <div id="addPostView" style="display: none;">
+            <form id="createPostForm">
+                <h1 class="font-semibold text-3xl my-2">Create Post</h1>
+                <input id="titlePostForm" type="text" placeholder="title"
+                    class="bg-gray-200 p-3 my-2 w-full rounded-md">
+                <div class="progress-panel my-2">
+                    <input class="file" type="file" type="upload" name="upload image" id="input-image">
+                    <div class="w-32 bg-gray-300 rounded-full">
+                        <div class="upload-image h-3 bg-green-600 my-2 rounded-full"></div>
+                    </div>
+                </div>
+                <textarea id="descriptionPostForm" name="description" id="" cols="30" rows="10"
+                    placeholder="description" class="bg-gray-200 p-3 my-2 w-full rounded-md"></textarea>
+                <button type="submit" class="w-full bg-black text-white my-2 p-3 rounded-md text-xl">Subir</button>
+            </form>
+        </div>
+
+        <!-- <div class='container mx-auto masonry-wrapper mb-10'>
+            <div id="getPostView" style="display: none;" class="masonry">
+                
+
+            <div>    
+        </div> -->
+        <!-- <div class="masonry-wrapper">
+            <div class="masonry">
+                
+                
+                <div class="masonry-item">
+                    <div class="masonry-content">
+                        <img src="https://picsum.photos/450/325?image=100" alt="Dummy Image">
+                        <h3 class="masonry-title">Nesciunt aspernatur eaque similique laudantium a</h3>
+                        <p class="masonry-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda
+                            modi inventore, totam vero consequuntur, aut animi veritatis tempora nulla facere placeat velit
+                            illum explicabo dicta enim ipsum. Vitae ducimus, ratione.</p>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div> -->
+
+
+        <div class='masonry-wrapper container mx-auto'>
+            <div id="getPostView" style="display: none;" class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+            </div>
+        </div>
+
     </div>
 
+    <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.js"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 
-    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            var elem = document.querySelector('.grid-container');
+            imagesLoaded(elem, function() {
+                var msnry = new Masonry( elem, {
+                    // options
+                    itemSelector: '.grid-item',
+                    columnWidth: 200
+                });
+            })
+        })
+
+    </script>
+
+
+
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-app.js"></script>
 
     <!-- TODO: Add SDKs for Firebase products that you want to use
- https://firebase.google.com/docs/web/setup#available-libraries -->
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+
+    <script>
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        var firebaseConfig = {
+            apiKey: "AIzaSyAN02dnVxEYmVfx_EjXmFG9pZpQDwCnkwY",
+            authDomain: "roxaaaaaaaaanne.firebaseapp.com",
+            projectId: "roxaaaaaaaaanne",
+            storageBucket: "roxaaaaaaaaanne.appspot.com",
+            messagingSenderId: "473711788473",
+            appId: "1:473711788473:web:2b8b07008438949369f668",
+            measurementId: "G-6YNLW92VMS"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+    </script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
     <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-analytics.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-storage.js"></script>
 
-    <script src="js/firebase/connection.js"></script>
-    <script src="js/firebase/main.js"></script>
-    <script src="js/ui/modal.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/util/modal.js"></script>
+    <script src="js/util/util.js"></script>
+    <script src="js/auth/autentication.js"></script>
+    <script src="js/auth/autenticationController.js"></script>
+    <script src="js/post/post.js"></script>
+    <script src="js/post/postController.js"></script>
 
 </body>
 
